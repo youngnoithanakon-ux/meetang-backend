@@ -7,6 +7,9 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RecurringTransactionController;
+use App\Http\Controllers\ImageController;
+
+Route::get('/images/{path}', [ImageController::class, 'show'])->where('path', '.*');
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

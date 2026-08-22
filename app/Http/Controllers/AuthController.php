@@ -77,4 +77,29 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+        
+        $request->validate([
+            'name' => 'string|max:255',
+            'password' => 'nullable|string|min:8',
+        ]);
+
+        $data = [];
+        if ($request->has('name')) {
+            $data['name'] = $request->name;
+        }
+        if ($request->has('password') && !empty($request->password)) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    }
 }

@@ -5,10 +5,11 @@
 ## 🚀 ฟีเจอร์หลัก (Features)
 - 🔐 **Authentication:** ระบบ Login / Register และจัดการ Token ด้วย Laravel Sanctum
 - 💼 **Wallets & Goals:** จัดการกระเป๋าเงิน และเป้าหมายการออมเงิน (Savings Goal)
+- 🪄 **Auto-Adjustment:** หากผู้ใช้แก้ไขยอดเงินกระเป๋าโดยตรง ระบบจะสร้างรายการรายรับ/รายจ่าย (ปรับปรุงยอดเงิน) ส่วนต่างให้อัตโนมัติ
 - 💸 **Transactions:** ระบบบันทึกรายรับ รายจ่าย และโอนเงินระหว่างกระเป๋า
 - 🔁 **Recurring Transactions:** ระบบตั้งเวลาหักเงินหรือโอนเงินอัตโนมัติรายเดือน
 - 📊 **Budgets & Charts:** ระบบดึงข้อมูลเพื่อสรุปงบประมาณและกราฟสถิติ
-- 🖼️ **File Uploads:** รองรับการอัปโหลดไฟล์สลิป/รูปภาพประกอบรายการ
+- 🖼️ **Image API:** รองรับการอัปโหลดไฟล์สลิป และมี ImageController สำหรับดึงรูปภาพผ่าน API โดยตรง (`/api/images/...`) เพื่อแก้ปัญหา Cloudflare บล็อกการเข้าถึงไฟล์ใน Storage
 
 ## 🛠️ Tech Stack
 - **Framework:** Laravel 11
@@ -44,16 +45,17 @@
    ```bash
    php artisan migrate
    ```
-   *(หมายเหตุ: เพื่อให้ Mobile App แนบรูปได้สมบูรณ์ใน Localhost อาจต้องปรับแต่ง Storage Link)*
+
+6. **ตั้งค่า Storage**
+   จำเป็นต้องสร้าง Symlink เพื่อให้สามารถบันทึกรูปภาพได้
    ```bash
    php artisan storage:link
    ```
 
-6. **รันเซิร์ฟเวอร์**
+7. **รันเซิร์ฟเวอร์**
    ```bash
-   php artisan serve --host=0.0.0.0 --port=8000
+   php artisan serve --host=0.0.0.0 --port=8082
    ```
-   *(หมายเหตุ: รันด้วย `--host=0.0.0.0` เพื่อให้ Mobile App บนโทรศัพท์จริง หรือ Emulator สามารถเชื่อมต่อผ่านวง LAN เดียวกันได้)*
 
 ## 📡 API Endpoints พื้นฐาน
 
@@ -65,8 +67,9 @@
 | POST   | `/api/wallets` | สร้างกระเป๋าเงิน / เป้าหมายการออม |
 | GET    | `/api/transactions` | ดึงข้อมูลประวัติการเงิน |
 | POST   | `/api/transactions` | สร้างรายการ (รับ/จ่าย/โอน) พร้อมรูปภาพ |
+| GET    | `/api/images/{path}`| ดึงรูปภาพสลิปที่แนบไว้ |
 | POST   | `/api/recurring-transactions`| ตั้งเวลารายการประจำ |
 | POST   | `/api/process-recurrings` | คำนวณและหักเงินรายการประจำเดือน |
 
 ## 🔒 Security
-API ทั้งหมด (ยกเว้น Login/Register) จำเป็นต้องส่ง Header `Authorization: Bearer <token>` ทุกครั้ง
+API ทั้งหมด (ยกเว้น Login/Register และ Image) จำเป็นต้องส่ง Header `Authorization: Bearer <token>` ทุกครั้ง

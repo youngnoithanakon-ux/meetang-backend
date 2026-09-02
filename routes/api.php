@@ -9,6 +9,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\ImageController;
 
+use App\Http\Controllers\DashboardController;
+
 Route::get('/images/{path}', [ImageController::class, 'show'])->where('path', '.*');
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -24,4 +26,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('transactions', TransactionController::class);
     Route::apiResource('recurring-transactions', RecurringTransactionController::class);
     Route::post('process-recurrings', [RecurringTransactionController::class, 'process']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });

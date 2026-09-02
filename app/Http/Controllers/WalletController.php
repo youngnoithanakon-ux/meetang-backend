@@ -57,7 +57,7 @@ class WalletController extends Controller
                 'type' => $diff > 0 ? 'income' : 'expense',
                 'amount' => abs($diff),
                 'date' => now(),
-                'notes' => 'ปรับปรุงยอดเงิน',
+                'note' => 'ปรับปรุงยอดเงิน',
                 'category_id' => null,
             ]);
         }

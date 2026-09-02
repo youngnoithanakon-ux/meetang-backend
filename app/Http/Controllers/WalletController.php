@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -48,6 +48,19 @@ class WalletController extends Controller
             'name' => 'string|max:255',
             'balance' => 'numeric'
         ]);
+
+        if ($request->has('balance') && $request->balance != $wallet->balance) {
+            $diff = (float)$request->balance - (float)$wallet->balance;
+            
+            $request->user()->transactions()->create([
+                'wallet_id' => $wallet->id,
+                'type' => $diff > 0 ? 'income' : 'expense',
+                'amount' => abs($diff),
+                'date' => now(),
+                'notes' => 'ปรับปรุงยอดเงิน',
+                'category_id' => null,
+            ]);
+        }
 
         $wallet->update($request->all());
 
